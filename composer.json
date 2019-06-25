@@ -1,0 +1,16 @@
+{
+    "name": "0th0n/adboard",
+    "description": "Pet project",
+    "authors": [
+        {
+            "name": "0TH0N",
+            "email": "jbator777@gmail.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "^3.12"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.2"
+    }
+}
