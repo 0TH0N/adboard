@@ -2,9 +2,6 @@
 
 namespace AdBoard\Tests;
 
-require __DIR__ . "/../public/index.php";
-require __DIR__ . "/../vendor/autoload.php";
-
 use PHPUnit\Framework\TestCase;
 
 class PublicIndexTest extends TestCase

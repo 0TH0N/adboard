@@ -7,11 +7,18 @@
             "email": "jbator777@gmail.com"
         }
     ],
+    "scripts": {
+        "tests": "phpunit tests"
+    },
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "AdBoard\\": "src/",
+            "AdBoard\\Tests\\": "tests/",
+            "AdBoard\\Config\\": "config/"
         },
-        "files": []
+        "files": [
+            "./public/index.php"
+        ]
     },
     "require": {
         "slim/slim": "^3.12",
