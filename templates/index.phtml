@@ -1,1 +1,24 @@
-Hello, world!
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Advertisment board</title>
+</head>
+<body>
+    <div class="container">
+        <?php foreach ($ads as $ad): ?>
+            <div class="ad">
+                <div><?=$ad['id']?></div>
+                <div><?=$ad['name']?></div>
+                <div><?=$ad['phone']?></div>
+                <div><?=$ad['ad_text']?></div>
+                <div><?=$ad['password']?></div>
+                <div><?=$ad['post_date']?></div>
+            </div>
+            <br>
+        <?php endforeach?>
+    </div>
+</body>
+</html>
