@@ -16,7 +16,7 @@ class Model
         id bigint NOT NULL,
         ad_text text NOT NULL,
         name varchar(255) NOT NULL,
-        password text NOT NULL,
+        password varchar(255) NOT NULL,
         phone varchar(255) NOT NULL,
         post_date datetime NOT NULL,
         PRIMARY KEY (id)

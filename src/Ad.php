@@ -40,9 +40,9 @@ class Ad
     /**
      * Get the value of name
      */
-    public function getName()
+    public function getUserName()
     {
-        return $this->name;
+        return $this->userName;
     }
 
     /**

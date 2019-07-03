@@ -4,24 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <style>
-        @import "/styles.css" screen;
-    </style>
-    <title>Advertisment board</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="styles.css">
+    <title>Advertisement board</title>
 </head>
 <body>
     <div class="container">
-        <?php foreach ($ads as $ad): ?>
-            <div class="ad">
-                <div><?=$ad->getId()?></div>
-                <div><?=$ad->getAdText()?></div>
-                <div><?=$ad->getName()?></div>
-                <div><?=$ad->getPassword()?></div>
-                <div><?=$ad->getPhone()?></div>
-                <div><?=$ad->getPostDate()?></div>
-            </div>
-            <br>
-        <?php endforeach?>
+        <header class="header">
+            <h1>Major site for your advertisements.</h1>
+            <h2>Post your advertisement. Buy goods from advertisements. And enjoy together with us.</h2>
+            <a href="/post-form" rel="post new ad">Please, click here, if you want post advertisement.</a>
+        </header>
+        <main class="ads">
+            <?php foreach ($ads as $ad): ?>
+                <div class="ad">
+                    <div class="ad__text"><b>Ad text:</b> <?=substr($ad->getAdText(), 0, 100) . " ..."?></div>
+                    <br>
+                    <div class="ad__name"><b>Name:</b> <?=$ad->getUserName()?></div>
+                    <div class="ad__phone"><b>Phone:</b> <?=$ad->getPhone()?></div>
+                    <div class="ad__post-date"><b>Post date:</b> <?=$ad->getPostDate()?></div>
+                    <br>
+                    <div class="ad-buttons">
+                        <form action="/show-ad/<?=$ad->getId()?>" method="get">
+                            <input type="submit" value="Show more">
+                        </form>
+                        <form action="/edit-form/<?=$ad->getId()?>" method="get">
+                            <input type="submit" value="Edit">
+                        </form>
+                        <form action="/delete-form/<?=$ad->getId()?>" method="get">
+                            <input type="submit" value="Delete">
+                        </form>
+                    </div>
+                </div>
+            <?php endforeach?>
+        </main>
     </div>
 </body>
 </html>

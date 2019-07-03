@@ -1,4 +1,59 @@
+h1 {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 50px;
+    font-weight: 800;
+    margin: 20px auto;
+}
+
+h2 {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 30px;
+    font-weight: 600;
+    margin: 10px auto;
+}
+
+.header > a {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 10px auto 20px auto;
+    text-decoration: none;
+}
+
+b {
+    font-weight: 800;
+}
+
 .container {
     width: 80%;
-    background-color: blue;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.ads {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));;
+    border-collapse: collapse;
+}
+
+.ad {
+    display: flex;
+    flex-direction: column;
+    border: #000 1px solid;
+    padding: 5px;
+}
+
+.ad__name {
+    margin-top: auto;
+}
+
+.ad-buttons {
+    display: flex;
+    justify-content: space-around;
 }
