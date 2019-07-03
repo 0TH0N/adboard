@@ -19,6 +19,13 @@ class PublicIndexTest extends TestCase
     {
         $responce = $this->client->get('/');
         $this->assertEquals($responce->getStatusCode(), 200);
-        $this->assertTrue(strpos($responce->getBody(), 'Advertisment board') !== false);
+        $this->assertTrue(strpos($responce->getBody(), 'Advertisement board') !== false);
+    }
+
+    public function testNewAdForm()
+    {
+        $responce = $this->client->get("/new-ad-form");
+        $this->assertEquals($responce->getStatusCode(), 200);
+        $this->assertTrue(strpos($responce->getBody(), 'Make new advertisement') !== false);
     }
 }

@@ -13,11 +13,12 @@
         <header class="header">
             <h1>Major site for your advertisements.</h1>
             <h2>Post your advertisement. Buy goods from advertisements. And enjoy together with us.</h2>
-            <a href="/post-form" rel="post new ad">Please, click here, if you want post advertisement.</a>
+            <a href="/new-ad-form" rel="post new ad">Please, click here, if you want post advertisement.</a>
         </header>
         <main class="ads">
             <?php foreach ($ads as $ad): ?>
                 <div class="ad">
+                    <div class="ad__id"><b>ID:</b> <?=$ad->getId()?></div>
                     <div class="ad__text"><b>Ad text:</b> <?=substr($ad->getAdText(), 0, 100) . " ..."?></div>
                     <br>
                     <div class="ad__name"><b>Name:</b> <?=$ad->getUserName()?></div>
@@ -27,12 +28,6 @@
                     <div class="ad-buttons">
                         <form action="/show-ad/<?=$ad->getId()?>" method="get">
                             <input type="submit" value="Show more">
-                        </form>
-                        <form action="/edit-form/<?=$ad->getId()?>" method="get">
-                            <input type="submit" value="Edit">
-                        </form>
-                        <form action="/delete-form/<?=$ad->getId()?>" method="get">
-                            <input type="submit" value="Delete">
                         </form>
                     </div>
                 </div>
