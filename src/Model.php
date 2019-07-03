@@ -14,6 +14,17 @@ class Model
         $id = hexdec(uniqid());
         $date = $innerDate !== null ? $innerDate : date_format(\Carbon\Carbon::now(), 'Y-m-d H:i:s');
         $hashPassword = crypt($adData['password']);
+        $sql = "SELECT * FROM ads WHERE ad_text = :ad_text AND name = :name AND phone = :phone";
+        $data = [
+            'ad_text' => $adData['ad-text'],
+            'name' => $adData['user-name'],
+            'phone' => $adData['phone'],
+        ];
+        $result = ORM::executeSQLQuery($sql, $data);
+        \var_dump($result);
+        if ($result[0] !== null) {
+            return false;
+        }
         $ad = new Ad($id, $adData['ad-text'], $adData['user-name'], $hashPassword, $adData['phone'], $date);
         return ORM::insertAd($ad);
     }

@@ -90,7 +90,7 @@ b {
 .detailed-ad {
     display: grid;
     grid-template-columns: 100px 200px;
-    grid-template-rows: 30px 30px 30px 30px 30px;
+    grid-gap: 30px;
     width: 300px;
     margin: 0 auto 0 auto;
 }
