@@ -24,7 +24,7 @@ class PublicIndexTest extends TestCase
 
     public function testNewAdForm()
     {
-        $responce = $this->client->get("/new-ad-form");
+        $responce = $this->client->get("/adform/new");
         $this->assertEquals($responce->getStatusCode(), 200);
         $this->assertTrue(strpos($responce->getBody(), 'Make new advertisement') !== false);
     }

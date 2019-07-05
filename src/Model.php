@@ -43,7 +43,7 @@ class Model
         }
         
         $id = hexdec(uniqid());
-        $password = crypt($adData['password']);
+        $password = password_hash($adData['password'], PASSWORD_BCRYPT);
         $date = $innerDate ?? date_format(\Carbon\Carbon::now(), 'Y-m-d H:i:s');
         $ad = new Ad($id, $adData['ad-text'], $adData['user-name'], $password, $adData['phone'], $date);
         $sql = "INSERT INTO ads (id, ad_text, name, password, phone, post_date) VALUES (?, ?, ?, ?, ?, ?)";
@@ -62,17 +62,17 @@ class Model
     {
         $sql = "SELECT * FROM ads WHERE id = ?";
         $data = [$id];
-        $adData = self::executeSQLQuery($sql, $data)[0];
+        $adData = self::executeSQLQuery($sql, $data);
         if (empty($adData)) {
             return false;
         }
         $ad = new Ad(
-            $adData['id'],
-            $adData['ad_text'],
-            $adData['name'],
-            $adData['password'],
-            $adData['phone'],
-            $adData['post_date']
+            $adData[0]['id'],
+            $adData[0]['ad_text'],
+            $adData[0]['name'],
+            $adData[0]['password'],
+            $adData[0]['phone'],
+            $adData[0]['post_date']
         );
         return $ad;
     }
