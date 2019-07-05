@@ -19,7 +19,12 @@ h2 {
     font-size: 20px;
     font-weight: 600;
     text-align: center;
-    text-decoration: none;
+    margin: 10px auto 10px auto;
+}
+
+.header > form {
+    display: flex;
+    align-items: baseline;
     margin: 10px auto 20px auto;
 }
 
@@ -39,16 +44,34 @@ b {
     align-items: center;
 }
 
+.commands {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+}
+
+#input-form {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+}
+
+#input-number {
+    width: 50px;
+}
+
 .ads {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    border: #000 1px solid;
+    grid-gap: 2px;
 }
 
 .ad {
     display: flex;
     flex-direction: column;
     border: #000 1px solid;
+    margin: 5px 0;
     padding: 5px;
 }
 
@@ -72,13 +95,12 @@ b {
 }
 
 .post-form textarea {
-    width: 400px;
-    height: 150px;
+    width: 600px;
+    height: 200px;
 }
 
 .post-form input {
-    width: 400px;
-    height: 20px;
+    width: 600px;
 }
 
 .post-form__button > input {
@@ -89,8 +111,18 @@ b {
 
 .detailed-ad {
     display: grid;
-    grid-template-columns: 100px 200px;
+    grid-template-columns: 100px 500px;
     grid-gap: 30px;
-    width: 300px;
+    width: 600px;
     margin: 0 auto 0 auto;
+}
+
+.nav-pages {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+}
+
+.nav-pages:last-child {
+    margin-bottom: 50px;
 }

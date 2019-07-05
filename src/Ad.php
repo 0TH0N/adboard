@@ -38,11 +38,35 @@ class Ad
     }
 
     /**
+     * Set the value of adText
+     *
+     * @return  self
+     */
+    public function setAdText($adText)
+    {
+        $this->adText = $adText;
+
+        return $this;
+    }
+
+    /**
      * Get the value of name
      */
     public function getUserName()
     {
         return $this->userName;
+    }
+
+    /**
+     * Set the value of userName
+     *
+     * @return  self
+     */
+    public function setUserName($userName)
+    {
+        $this->userName = $userName;
+
+        return $this;
     }
 
     /**
@@ -62,10 +86,34 @@ class Ad
     }
 
     /**
+     * Set the value of phone
+     *
+     * @return  self
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
      * Get the value of post_date
      */
     public function getPostDate()
     {
         return $this->postDate;
+    }
+
+    /**
+     * Set the value of postDate
+     *
+     * @return  self
+     */
+    public function setPostDate($postDate)
+    {
+        $this->postDate = $postDate;
+
+        return $this;
     }
 }

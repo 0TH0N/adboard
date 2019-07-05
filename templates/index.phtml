@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <title>Advertisement board</title>
 </head>
 <body>
@@ -13,11 +14,105 @@
         <header class="header">
             <h1>Major site for your advertisements.</h1>
             <h2>Post your advertisement. Buy goods from advertisements. And enjoy together with us.</h2>
-            <a href="/new-ad-form" rel="post new ad">Please, click here, if you want post advertisement.</a>
+            <a href="/adform/new?prevpage=<?=$page?>" rel="post new ad">Please, click here, if you want post advertisement.</a>
+            <div class="commands">
+                Commands:&nbsp;&nbsp;
+                <form action="/remake-table" method="post">
+                    <input type="hidden" name="_METHOD" value="DELETE">
+                    <input type="submit" value="Destroy all ads" class="btn btn-danger">
+                </form>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                
+                <form action="/make-fake-ads" method="post" id="input-form">
+                    Count:&nbsp;&nbsp;
+                    <input type="text" name="count" value="1" id="input-number">
+                    &nbsp;&nbsp;
+                    <input type="submit" value="Make new fake ads" class="btn btn-secondary">
+                </form>
+            </div>
         </header>
+
+        <div class="nav-pages">
+            <div>
+                <?php if ($page > 1): ?>
+                    <a href="?page=<?= $page - 1 ?>">
+                <?php endif ?>
+                <<&nbsp;
+                <?php if ($page > 1): ?>
+                    </a>
+                <?php endif ?>
+            </div>
+
+            <div>
+                <?php if ($page > 1): ?>
+                    <a href="?page=<?= 1 ?>">
+                <?php endif ?>
+                &nbsp;1&nbsp;
+                <?php if ($page > 1): ?>
+                    </a>
+                <?php endif ?>
+            </div>
+
+            <div>
+                <?php if ($page > 3): ?>
+                    ..
+                <?php endif ?>
+            </div>
+
+            <div>
+                <?php if ($page > 2): ?>
+                    <a href="?page=<?= $page - 1 ?>">
+                        &nbsp;<?= $page - 1 ?>&nbsp;
+                    </a>
+                <?php endif ?>
+            </div>
+
+            <div>
+                <?php if (($page > 1) && ($page < $maxPage)): ?>
+                    &nbsp;<?= $page ?>&nbsp;
+                <?php endif ?>
+            </div>
+
+            <div>
+                <?php if ($page < $maxPage - 1): ?>
+                    <a href="?page=<?= $page + 1 ?>">
+                        &nbsp;<?= $page + 1 ?>&nbsp;
+                    </a>
+                <?php endif ?>
+            </div>
+
+            <div>
+                <?php if ($page < $maxPage - 2): ?>
+                    ..
+                <?php endif ?>
+            </div>
+
+            <div>
+                <?php if ($page < $maxPage): ?>
+                    <a href="?page=<?= $maxPage ?>">
+                <?php endif ?>
+                <?php if ($maxPage > 1): ?>
+                    &nbsp;<?= $maxPage ?>&nbsp;
+                <?php endif ?>
+                <?php if ($page < $maxPage): ?>
+                    </a>
+                <?php endif ?>
+            </div>
+
+            <div>
+                <?php if ($page < $maxPage): ?>
+                    <a href="?page=<?= $page + 1 ?>">
+                <?php endif ?>
+                &nbsp;>>
+                <?php if ($page < $maxPage): ?>
+                    </a>
+                <?php endif ?>
+            </div>
+        </div>
+
         <main class="ads">
             <?php foreach ($ads as $ad): ?>
-                <div class="ad">
+                <div class="ad jumbotron">
                     <div class="ad__id"><b>ID:</b> <?=$ad->getId()?></div>
                     <div class="ad__text"><b>Ad text:</b> <?=substr($ad->getAdText(), 0, 100) . " ..."?></div>
                     <br>
@@ -26,13 +121,92 @@
                     <div class="ad__post-date"><b>Post date:</b> <?=$ad->getPostDate()?></div>
                     <br>
                     <div class="ad-buttons">
-                        <form action="/show-ad/<?=$ad->getId()?>" method="get">
-                            <input type="submit" value="Show more">
+                        <form action="/ads/<?=$ad->getId()?>" method="get">
+                            <input type="hidden" name="prevpage" value=<?=$page?>>
+                            <input type="submit" value="Show more" class="btn btn-primary">
                         </form>
                     </div>
                 </div>
             <?php endforeach?>
         </main>
+
+        <div class="nav-pages">
+            <div>
+                <?php if ($page > 1): ?>
+                    <a href="?page=<?= $page - 1 ?>">
+                <?php endif ?>
+                <<&nbsp;
+                <?php if ($page > 1): ?>
+                    </a>
+                <?php endif ?>
+            </div>
+
+            <div>
+                <?php if ($page > 1): ?>
+                    <a href="?page=<?= 1 ?>">
+                <?php endif ?>
+                &nbsp;1&nbsp;
+                <?php if ($page > 1): ?>
+                    </a>
+                <?php endif ?>
+            </div>
+
+            <div>
+                <?php if ($page > 3): ?>
+                    ..
+                <?php endif ?>
+            </div>
+
+            <div>
+                <?php if ($page > 2): ?>
+                    <a href="?page=<?= $page - 1 ?>">
+                        &nbsp;<?= $page - 1 ?>&nbsp;
+                    </a>
+                <?php endif ?>
+            </div>
+
+            <div>
+                <?php if (($page > 1) && ($page < $maxPage)): ?>
+                    &nbsp;<?= $page ?>&nbsp;
+                <?php endif ?>
+            </div>
+
+            <div>
+                <?php if ($page < $maxPage - 1): ?>
+                    <a href="?page=<?= $page + 1 ?>">
+                        &nbsp;<?= $page + 1 ?>&nbsp;
+                    </a>
+                <?php endif ?>
+            </div>
+
+            <div>
+                <?php if ($page < $maxPage - 2): ?>
+                    ..
+                <?php endif ?>
+            </div>
+
+            <div>
+                <?php if ($page < $maxPage): ?>
+                    <a href="?page=<?= $maxPage ?>">
+                <?php endif ?>
+                <?php if ($maxPage > 1): ?>
+                    &nbsp;<?= $maxPage ?>&nbsp;
+                <?php endif ?>
+                <?php if ($page < $maxPage): ?>
+                    </a>
+                <?php endif ?>
+            </div>
+
+            <div>
+                <?php if ($page < $maxPage): ?>
+                    <a href="?page=<?= $page + 1 ?>">
+                <?php endif ?>
+                &nbsp;>>
+                <?php if ($page < $maxPage): ?>
+                    </a>
+                <?php endif ?>
+            </div>
+        </div>
     </div>
 </body>
 </html>
