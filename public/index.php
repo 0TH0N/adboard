@@ -3,6 +3,7 @@
 namespace AdBoard\Index;
 
 require_once __DIR__ . '/../vendor/autoload.php';
+use \AdBoard\Model;
 
 if (PHP_SAPI == 'cli-server') {
     // To help the built-in PHP dev server, check if the request was actually for
@@ -29,8 +30,8 @@ $container['renderer'] = new \Slim\Views\PhpRenderer(__DIR__ . '/../templates');
 
 $app->get('/', function ($request, $response) {
     $page = $request->getQueryParam('page', 1);
-    $ads = \AdBoard\Model::getAds($page);
-    $maxPage = \AdBoard\Model::getMaxPageNumber();
+    $ads = Model::getAds($page);
+    $maxPage = Model::getMaxPageNumber();
     $params = [
         'ads' => $ads,
         'page' => $page,
@@ -40,14 +41,14 @@ $app->get('/', function ($request, $response) {
 });
 
 $app->delete('/remake-table', function ($request, $response) {
-    \AdBoard\Model::destroyTableAds();
-    \AdBoard\Model::createTableAds();
+    Model::destroyTableAds();
+    Model::createTableAds();
     return $response->withRedirect('/', 301);
 });
 
 $app->post('/make-fake-ads', function ($request, $response) {
     $number = $request->getParsedBodyParam('count');
-    \AdBoard\Model::fillAds($number);
+    Model::fillAds($number);
     return $response->withRedirect('/', 301);
 });
 
@@ -59,14 +60,14 @@ $app->get('/adform/new', function ($request, $response) {
 
 $app->post('/adform', function ($request, $response) {
     $adData = $request->getParsedBodyParam('ad');
-    $requestResult = \AdBoard\Model::createAd($adData);
+    $requestResult = Model::createAd($adData);
     return $response->withRedirect('/', 301);
 });
 
 $app->get('/ads/{id}', function ($request, $response, $args) {
     $id = $args['id'];
     $prevPage = $request->getQueryParam('prevpage', 1);
-    $ad = \AdBoard\Model::getAd($id);
+    $ad = Model::getAd($id);
     $params = ['ad' => $ad, 'prevPage' => $prevPage];
     return $this->renderer->render($response, 'show-ad.phtml', $params);
 });
