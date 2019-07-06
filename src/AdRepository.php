@@ -21,6 +21,7 @@ class AdRepository
 
     public static function getAds($page = 1, $perPage = 12)
     {
+        self::createTableAds();
         $offset = $perPage * ($page - 1);
         $sql = "SELECT * FROM ads ORDER BY post_date DESC LIMIT ? OFFSET ?";
         $data = [$perPage, $offset];

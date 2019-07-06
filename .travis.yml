@@ -4,5 +4,6 @@ php:
 
 
 script:
+  - make dump-autoload
   - make test
   - make phpcs
