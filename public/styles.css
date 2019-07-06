@@ -48,6 +48,7 @@ b {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    align-content: center;
     align-items: baseline;
 }
 
@@ -59,6 +60,10 @@ b {
 
 #input-number {
     width: 50px;
+}
+
+.flash-messages {
+    margin-top: 20px;
 }
 
 .ads {
@@ -125,4 +130,8 @@ b {
 
 .nav-pages:last-child {
     margin-bottom: 50px;
+}
+
+.alert-for-new-form {
+    margin-bottom: 20px;
 }

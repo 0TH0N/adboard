@@ -2,9 +2,9 @@
 
 namespace AdBoard;
 
-class Model
+class AdRepository
 {
-    public static function executeSQLQuery($sql, $data = [])
+    public static function fetchSQLAll($sql, $data = [])
     {
         $pdo = \AdBoard\Config\DBConnection::getConnection();
         $stmt = $pdo->prepare($sql);
@@ -12,12 +12,19 @@ class Model
         return $stmt->fetchAll();
     }
 
+    public static function getSQLBoolResult($sql, $data = [])
+    {
+        $pdo = \AdBoard\Config\DBConnection::getConnection();
+        $stmt = $pdo->prepare($sql);
+        return $stmt->execute($data);
+    }
+
     public static function getAds($page = 1, $perPage = 12)
     {
         $offset = $perPage * ($page - 1);
         $sql = "SELECT * FROM ads ORDER BY post_date DESC LIMIT ? OFFSET ?";
         $data = [$perPage, $offset];
-        $adsData = self::executeSQLQuery($sql, $data);
+        $adsData = self::fetchSQLAll($sql, $data);
         $ads = collect($adsData)->map(function ($ad) {
             return new Ad($ad['id'], $ad['ad_text'], $ad['name'], $ad['password'], $ad['phone'], $ad['post_date']);
         });
@@ -27,7 +34,7 @@ class Model
     public static function getMaxPageNumber($perPage = 12)
     {
         $sql = "SELECT COUNT(id) FROM ads";
-        $numberOfAds = self::executeSQLQuery($sql)[0]['COUNT(id)'];
+        $numberOfAds = self::fetchSQLAll($sql)[0]['COUNT(id)'];
         $maxPage = ceil($numberOfAds / $perPage);
         return $maxPage;
     }
@@ -36,10 +43,10 @@ class Model
     {
         $sql = "SELECT * FROM ads WHERE ad_text = ? AND name = ? AND phone = ?";
         $data = [$adData['ad-text'], $adData['user-name'], $adData['phone']];
-        $existedAds = self::executeSQLQuery($sql, $data);
+        $existedAds = self::fetchSQLAll($sql, $data);
         
         if (!empty($existedAds[0])) {
-            return false;
+            return 'Similar ad is exist!';
         }
         
         $id = hexdec(uniqid());
@@ -55,14 +62,14 @@ class Model
             $ad->getPhone(),
             $ad->getPostDate(),
         ];
-        return self::executeSQLQuery($sql, $data);
+        return self::getSQLBoolResult($sql, $data) ? 'true' : 'false';
     }
 
     public static function getAd($id)
     {
         $sql = "SELECT * FROM ads WHERE id = ?";
         $data = [$id];
-        $adData = self::executeSQLQuery($sql, $data);
+        $adData = self::fetchSQLAll($sql, $data);
         if (empty($adData)) {
             return false;
         }
@@ -88,25 +95,29 @@ class Model
             post_date datetime NOT NULL,
             PRIMARY KEY (id)
             )";
-        self::executeSQLQuery($sql);
+        return self::getSQLBoolResult($sql);
     }
 
     public static function destroyTableAds()
     {
         $sql = "DROP TABLE IF EXISTS ads";
-        self::executeSQLQuery($sql);
+        return self::getSQLBoolResult($sql);
     }
 
     public static function fillAds($number)
     {
         $faker = \Faker\Factory::create();
         for ($i = 0; $i < $number; $i++) {
-            self::createAd([
+            $queryBoolResult = self::createAd([
                 'ad-text' => $faker->text,
                 'user-name' => $faker->name,
                 'password' => '123',
                 'phone' => $faker->phoneNumber,
             ], date_format($faker->dateTimeBetween('-1 week'), 'Y-m-d H:i:s'));
+            if (!$queryBoolResult) {
+                return false;
+            }
         }
+        return true;
     }
 }

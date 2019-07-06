@@ -3,45 +3,45 @@
 namespace AdBoard\Tests;
 
 use PHPUnit\Framework\TestCase;
-use AdBoard\Model;
+use AdBoard\AdRepository;
 
-class ModelTest extends TestCase
+class AdRepositoryTest extends TestCase
 {
     public function testTableFunctions()
     {
-        Model::destroyTableAds();
-        Model::createTableAds();
-        $ads = Model::getAds();
+        AdRepository::destroyTableAds();
+        AdRepository::createTableAds();
+        $ads = AdRepository::getAds();
         $this->assertEmpty($ads);
     }
 
     public function testOtherFunctions()
     {
-        Model::destroyTableAds();
-        Model::createTableAds();
+        AdRepository::destroyTableAds();
+        AdRepository::createTableAds();
         $adData = [
             'ad-text' => '123',
             'user-name' => '123',
             'password' => '123',
             'phone' => '123'
         ];
-        Model::createAd($adData);
-        $ads = Model::getAds();
+        AdRepository::createAd($adData);
+        $ads = AdRepository::getAds();
         $this->assertEquals(1, count($ads));
 
         $id = $ads[0]->getId();
-        $ad = Model::getAd($id);
+        $ad = AdRepository::getAd($id);
         $this->assertEquals($ad->getId(), $id);
 
-        $maxPage = Model::getMaxPageNumber();
+        $maxPage = AdRepository::getMaxPageNumber();
         $this->assertEquals(1, $maxPage);
 
-        Model::destroyTableAds();
-        Model::createTableAds();
-        $ad = Model::getAd($id);
+        AdRepository::destroyTableAds();
+        AdRepository::createTableAds();
+        $ad = AdRepository::getAd($id);
         $this->assertFalse($ad);
 
-        $maxPage = Model::getMaxPageNumber();
+        $maxPage = AdRepository::getMaxPageNumber();
         $this->assertEquals(0, $maxPage);
     }
 }

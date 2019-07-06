@@ -12,7 +12,7 @@
 <body>
     <div class="container">
         <div class="back-to-main">
-            <a href="/?page=<?= $prevPage ?>"><< Return</a>
+            <a href="/?page=<?= $previousPage ?>"><< Return</a>
         </div>
         <header class="header">
             <h1>Make new advertisement</h1>
@@ -20,30 +20,74 @@
         <main class="main">
             <form action="/adform" method="post" class="form-group">
                 <div class="post-form">
+                    <input type="hidden" name="previousPage" value=<?=$previousPage?>>
                     <div class="post-form__item post-form__ad-text">
                         <label>
                             <div>Advertisement text:</div>
-                            <textarea name="ad[ad-text]" required class="form-control"></textarea>
+                            <textarea name="ad[ad-text]" required class="form-control"><?=htmlspecialchars($adData['ad-text']) ?? ''?></textarea>
                         </label>
+                    </div>
+                    <div class="alert-for-new-form">
+                        <?php foreach ($errors['adText'] as $error): ?>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <?= $error ?>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <?php endforeach ?>
                     </div>
                     <div class="post-form__item post-form__name">
                         <label>
                             <div>Your name:</div>
-                            <input type="text" name="ad[user-name]" required class="form-control">
+                            <input type="text" name="ad[user-name]" required class="form-control" value=<?=htmlspecialchars($adData['user-name']) ?? ''?>>
                         </label>
                     </div>
+                    <div class="alert-for-new-form">
+                        <?php foreach ($errors['userName'] as $error): ?>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <?= $error ?>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <?php endforeach ?>
+                    </div>
+
                     <div class="post-form__item post-form__phone">
                         <label>
                             <div>Your password for this ad:</div>
                             <input type="password" name="ad[password]" required class="form-control">
                         </label>
                     </div>
+                    <div class="alert-for-new-form">
+                        <?php foreach ($errors['password'] as $error): ?>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <?= $error ?>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <?php endforeach ?>
+                    </div>
+
                     <div class="post-form__item post-form__phone">
                         <label>
                             <div>Your phone:</div>
-                            <input type="text" name="ad[phone]" required class="form-control">
+                            <input type="text" name="ad[phone]" required class="form-control" value=<?=htmlspecialchars($adData['phone']) ?? ''?>>
                         </label>
                     </div>
+                    <div class="alert-for-new-form">
+                        <?php foreach ($errors['phone'] as $error): ?>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <?= $error ?>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <?php endforeach ?>
+                    </div>
+
                     <div class="post-form__item post-form__button">
                         <input type="submit" value="Post advertisement" class="btn btn-primary">
                     </div>
@@ -51,5 +95,8 @@
             </form>
         </main>
     </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>
