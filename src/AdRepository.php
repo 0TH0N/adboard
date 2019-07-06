@@ -25,9 +25,11 @@ class AdRepository
         $sql = "SELECT * FROM ads ORDER BY post_date DESC LIMIT ? OFFSET ?";
         $data = [$perPage, $offset];
         $adsData = self::fetchSQLAll($sql, $data);
-        $ads = collect($adsData)->map(function ($ad) {
-            return new Ad($ad['id'], $ad['ad_text'], $ad['name'], $ad['password'], $ad['phone'], $ad['post_date']);
-        });
+        $ads = collect($adsData)->map(
+            function ($ad) {
+                return new Ad($ad['id'], $ad['ad_text'], $ad['name'], $ad['password'], $ad['phone'], $ad['post_date']);
+            }
+        );
         return $ads->all();
     }
 
@@ -108,12 +110,15 @@ class AdRepository
     {
         $faker = \Faker\Factory::create();
         for ($i = 0; $i < $number; $i++) {
-            $queryBoolResult = self::createAd([
+            $queryBoolResult = self::createAd(
+                [
                 'ad-text' => $faker->text,
                 'user-name' => $faker->name,
                 'password' => '123',
                 'phone' => $faker->phoneNumber,
-            ], date_format($faker->dateTimeBetween('-1 week'), 'Y-m-d H:i:s'));
+                ],
+                date_format($faker->dateTimeBetween('-1 week'), 'Y-m-d H:i:s')
+            );
             if (!$queryBoolResult) {
                 return false;
             }

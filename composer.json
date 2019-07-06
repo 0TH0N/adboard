@@ -9,7 +9,7 @@
     ],
     "scripts": {
         "tests": "phpunit tests",
-        "phpcs": "phpcs"
+        "phpcs": "phpcs --standard=PSR12 --ignore=vendor ./"
     },
     "autoload": {
         "psr-4": {

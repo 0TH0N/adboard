@@ -4,12 +4,12 @@ namespace AdBoard;
 
 class Ad
 {
-    private $id;
-    private $adText;
-    private $userName;
-    private $password;
-    private $phone;
-    private $postDate;
+    protected $id;
+    protected $adText;
+    protected $userName;
+    protected $password;
+    protected $phone;
+    protected $postDate;
 
     public function __construct($id, $adText, $userName, $password, $phone, $postDate)
     {
@@ -40,7 +40,7 @@ class Ad
     /**
      * Set the value of adText
      *
-     * @return  self
+     * @return self
      */
     public function setAdText($adText)
     {
@@ -60,7 +60,7 @@ class Ad
     /**
      * Set the value of userName
      *
-     * @return  self
+     * @return self
      */
     public function setUserName($userName)
     {
@@ -88,7 +88,7 @@ class Ad
     /**
      * Set the value of phone
      *
-     * @return  self
+     * @return self
      */
     public function setPhone($phone)
     {
@@ -108,7 +108,7 @@ class Ad
     /**
      * Set the value of postDate
      *
-     * @return  self
+     * @return self
      */
     public function setPostDate($postDate)
     {

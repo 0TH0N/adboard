@@ -3,3 +3,6 @@ start:
 
 test:
 	composer run-script tests
+
+phpcs:
+	composer run-script phpcs
