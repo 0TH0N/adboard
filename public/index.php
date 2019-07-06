@@ -32,6 +32,7 @@ $container['flash'] = function () {
     return new \Slim\Flash\Messages();
 };
 
+// Start main page
 $app->get('/', function ($request, $response) {
     $page = $request->getQueryParam('page', 1);
     $ads = AdRepository::getAds($page);
@@ -52,12 +53,14 @@ $app->get('/', function ($request, $response) {
     return $this->renderer->render($response, 'index.phtml', $params);
 });
 
+// Destroy database table ads and create new
 $app->delete('/remake-table', function ($request, $response) {
     AdRepository::destroyTableAds();
     AdRepository::createTableAds();
     return $response->withRedirect('/', 301);
 });
 
+// Fill database fake ads
 $app->post('/make-fake-ads', function ($request, $response) {
     $number = $request->getParsedBodyParam('count');
     $violations = Validator::validateNumberFakeAds($number);
@@ -80,12 +83,14 @@ $app->post('/make-fake-ads', function ($request, $response) {
     return $response->withRedirect('/', 301);
 });
 
+// Form for new ad
 $app->get('/adform/new', function ($request, $response) {
     $page = $request->getQueryParam('page', 1);
     $params = ['page' => $page];
     return $this->renderer->render($response, 'new-ad-form.phtml', $params);
 });
 
+// Validation and creation new ad
 $app->post('/adform', function ($request, $response) {
     $adData = $request->getParsedBodyParam('ad');
     $page = $request->getParsedBodyParam('page');
@@ -97,6 +102,7 @@ $app->post('/adform', function ($request, $response) {
         }
     }
     
+    // If validation OK go creation ad
     if (empty($allViolations)) {
         $requestResult = AdRepository::createAd($adData);
         switch ($requestResult) {
@@ -115,6 +121,7 @@ $app->post('/adform', function ($request, $response) {
         return $response->withRedirect('/', 301);
     }
 
+    // If validation NOT OK return to repeat filling form
     $params = [
         'adData' => $adData,
         'errors' => $violations,
@@ -125,6 +132,7 @@ $app->post('/adform', function ($request, $response) {
     return $this->renderer->render($response, 'new-ad-form.phtml', $params);
 });
 
+// Show specific ad
 $app->get('/ads/{id}', function ($request, $response, $args) {
     $id = $args['id'];
     $page = $request->getQueryParam('page', 1);
@@ -133,6 +141,7 @@ $app->get('/ads/{id}', function ($request, $response, $args) {
     return $this->renderer->render($response, 'show-ad.phtml', $params);
 });
 
+// Show form for edit specific ad
 $app->get('/ads/edit/{id}', function ($request, $response, $args) {
     $id = $args['id'];
     $page = $request->getQueryParam('page', 1);
@@ -147,6 +156,7 @@ $app->get('/ads/edit/{id}', function ($request, $response, $args) {
     return $this->renderer->render($response, 'show-ad-edit.phtml', $params);
 });
 
+// Route for update specific ad
 $app->patch('/ads/edit', function ($request, $response) {
     $adData = $request->getParsedBodyParam('ad');
     $ad = AdRepository::getAd($adData['id']);
@@ -164,6 +174,7 @@ $app->patch('/ads/edit', function ($request, $response) {
         }
     }
     
+    // If validation OK and password is right go to updating procudure
     if (empty($allViolations) && (!$wrongPassword)) {
         $requestResult = AdRepository::updateAd($adData);
         switch ($requestResult) {
@@ -178,6 +189,7 @@ $app->patch('/ads/edit', function ($request, $response) {
         return $response->withRedirect("/?page={$page}", 301);
     }
     
+    // If updating is not OK return to form and repeat filling form
     $params = [
         'adData' => $adData,
         'errors' => $violations,
