@@ -34,12 +34,52 @@
                 </form>
             </div>
             <div>
-                <form action="/ads/delete/<?=$ad->getId()?>" method="get">
-                    <input type="hidden" name="page" value=<?=$page?>>
-                    <input type="submit" value="Delete" class="btn btn-danger">
-                </form>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+                    Delete
+                </button>
             </div>
         </main>
+        <?php if ($wrongPassword): ?>
+            <br>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                Inputed password is wrong!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <?php endif ?>
+    </div>
+
+    
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete advertisement</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Do you real want delete this advertisement?
+            </div>
+            <div class="modal-footer">
+                <form action="/ads/delete/<?=$ad->getId()?>" method="post" id="modal-delete-yes-button">
+                    <input type="hidden" name="_METHOD" value="DELETE">
+                    <input type="hidden" name="page" value=<?=$page?>>
+                    <label>
+                        Password:
+                        <input type="password" name="password" id="">
+                    </label>
+                    <input type="submit" value="Yes, delete." class="btn btn-danger">
+                </form>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No, close.</button>
+                <!--<button type="button" class="btn btn-danger">Yes, delete.</button>-->
+            </div>
+            </div>
+        </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

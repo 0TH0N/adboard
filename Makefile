@@ -7,6 +7,4 @@ test:
 phpcs:
 	composer run-script phpcs
 
-dump-autoload:
-	composer dump-autoload
 

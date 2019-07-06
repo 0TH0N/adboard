@@ -35,8 +35,9 @@ $container['flash'] = function () {
 // Start main page
 $app->get('/', function ($request, $response) {
     $page = $request->getQueryParam('page', 1);
-    $ads = AdRepository::getAds($page);
     $maxPage = AdRepository::getMaxPageNumber();
+    $page = $page < $maxPage ? $page : $maxPage;
+    $ads = AdRepository::getAds($page);
     $flashMessages = $this->flash->getMessages();
     $params = [
         'ads' => $ads,
@@ -136,8 +137,13 @@ $app->post('/adform', function ($request, $response) {
 $app->get('/ads/{id}', function ($request, $response, $args) {
     $id = $args['id'];
     $page = $request->getQueryParam('page', 1);
+    $wrongPassword = $request->getQueryParam('wrongPassword', false);
     $ad = AdRepository::getAd($id);
-    $params = ['ad' => $ad, 'page' => $page];
+    $params = [
+        'ad' => $ad,
+        'page' => $page,
+        'wrongPassword' => $wrongPassword
+    ];
     return $this->renderer->render($response, 'show-ad.phtml', $params);
 });
 
@@ -150,7 +156,7 @@ $app->get('/ads/edit/{id}', function ($request, $response, $args) {
         'id' => $id,
         'adText' => $ad->getAdText(),
         'userName' => $ad->getUserName(),
-        'phone' => $ad->getPhone()
+        'phone' => $ad->getPhone(),
     ];
     $params = ['adData' => $adData, 'page' => $page];
     return $this->renderer->render($response, 'show-ad-edit.phtml', $params);
@@ -199,6 +205,28 @@ $app->patch('/ads/edit', function ($request, $response) {
     $response->withStatus(403);
     $response->withHeader('X-Status-Reason', 'Validation failed');
     return $this->renderer->render($response, 'show-ad-edit.phtml', $params);
+});
+
+// Route for delete specific ad
+$app->delete('/ads/delete/{id}', function ($request, $response, $args) {
+    $id = $args['id'];
+    $ad = AdRepository::getAd($id);
+    $page = $request->getParsedBodyParam('page', 1);
+    $password = $request->getParsedBodyParam('password');
+
+    // If password is right then delete ad
+    if (AdRepository::checkPassword($password, $ad->getPassword())) {
+        $resultQueryBool = AdRepository::deleteAd($id);
+        if ($resultQueryBool) {
+            $this->flash->addMessage('success', 'Ad deleted successful!');
+        } else {
+            $this->flash->addMessage('error', 'Something went wrong during ad deletion!');
+        }
+        return $response->withRedirect("/?page={$page}", 301);
+    }
+
+    // If wrong password redirect to show this ad page for new attempt
+    return $response->withRedirect("/ads/{$id}?page={$page}&wrongPassword=1", 301);
 });
 
 $app->run();

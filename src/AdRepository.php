@@ -109,6 +109,13 @@ class AdRepository
         return self::getSQLBoolResult($sql, $data);
     }
 
+    public static function deleteAd($id)
+    {
+        $sql = "DELETE FROM ads WHERE id = ?";
+        $data = [$id];
+        return self::getSQLBoolResult($sql, $data);
+    }
+
     public static function createTableAds()
     {
         $sql = "CREATE TABLE IF NOT EXISTS ads (

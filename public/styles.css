@@ -135,3 +135,19 @@ b {
 .alert-for-new-form {
     margin-bottom: 20px;
 }
+
+.modal-footer {
+    display: flex;
+    align-items: baseline;
+}
+
+#modal-delete-yes-button {
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+}
+
+#modal-delete-yes-button > label > input {
+    width: 120px;
+    margin-right: 5px;
+}

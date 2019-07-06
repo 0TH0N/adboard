@@ -56,5 +56,9 @@ class AdRepositoryTest extends TestCase
         AdRepository::updateAd($newAdData);
         $ad = AdRepository::getAds()[0];
         $this->assertEquals('555', $ad->getUserName());
+
+        AdRepository::deleteAd($ad->getId());
+        $ads = AdRepository::getAds();
+        $this->assertEmpty($ads);
     }
 }
