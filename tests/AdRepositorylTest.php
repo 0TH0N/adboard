@@ -20,8 +20,8 @@ class AdRepositoryTest extends TestCase
         AdRepository::destroyTableAds();
         AdRepository::createTableAds();
         $adData = [
-            'ad-text' => '123',
-            'user-name' => '123',
+            'adText' => '123',
+            'userName' => '123',
             'password' => '123',
             'phone' => '123'
         ];
@@ -43,5 +43,18 @@ class AdRepositoryTest extends TestCase
 
         $maxPage = AdRepository::getMaxPageNumber();
         $this->assertEquals(0, $maxPage);
+
+        AdRepository::createAd($adData);
+        $ads = AdRepository::getAds();
+        $id = $ads[0]->getId();
+        $newAdData = [
+            'id' => $id,
+            'adText' => '555',
+            'userName' => '555',
+            'phone' => '555'
+        ];
+        AdRepository::updateAd($newAdData);
+        $ad = AdRepository::getAds()[0];
+        $this->assertEquals('555', $ad->getUserName());
     }
 }

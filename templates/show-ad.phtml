@@ -13,7 +13,7 @@
 <body>
     <div class="container">
         <div class="back-to-main">
-            <a href="/?page=<?= $previousPage ?>"><< Return</a>
+            <a href="/?page=<?= $page ?>"><< Return</a>
         </div>
         <header class="header">
             <h1>Advertisement <?=$ad->getId()?></h1>
@@ -28,12 +28,14 @@
             <div>Post date</div>
             <div><?=$ad->getPostDate()?></div>
             <div>
-                <form action="/edit-form/<?=$ad->getId()?>" method="get">
+                <form action="/ads/edit/<?=$ad->getId()?>" method="get">
+                    <input type="hidden" name="page" value=<?=$page?>>
                     <input type="submit" value="Edit" class="btn btn-secondary">
                 </form>
             </div>
             <div>
-                <form action="/delete-form/<?=$ad->getId()?>" method="get">
+                <form action="/ads/delete/<?=$ad->getId()?>" method="get">
+                    <input type="hidden" name="page" value=<?=$page?>>
                     <input type="submit" value="Delete" class="btn btn-danger">
                 </form>
             </div>

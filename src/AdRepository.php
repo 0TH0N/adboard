@@ -4,6 +4,16 @@ namespace AdBoard;
 
 class AdRepository
 {
+    public static function cryptPassword($password)
+    {
+        return password_hash($password, PASSWORD_BCRYPT);
+    }
+
+    public static function checkPassword($password, $hash)
+    {
+        return password_verify($password, $hash);
+    }
+
     public static function fetchSQLAll($sql, $data = [])
     {
         $pdo = \AdBoard\Config\DBConnection::getConnection();
@@ -45,7 +55,7 @@ class AdRepository
     public static function createAd($adData, $innerDate = null)
     {
         $sql = "SELECT * FROM ads WHERE ad_text = ? AND name = ? AND phone = ?";
-        $data = [$adData['ad-text'], $adData['user-name'], $adData['phone']];
+        $data = [$adData['adText'], $adData['userName'], $adData['phone']];
         $existedAds = self::fetchSQLAll($sql, $data);
         
         if (!empty($existedAds[0])) {
@@ -53,9 +63,9 @@ class AdRepository
         }
         
         $id = hexdec(uniqid());
-        $password = password_hash($adData['password'], PASSWORD_BCRYPT);
+        $password = self::cryptPassword($adData['password']);
         $date = $innerDate ?? date_format(\Carbon\Carbon::now(), 'Y-m-d H:i:s');
-        $ad = new Ad($id, $adData['ad-text'], $adData['user-name'], $password, $adData['phone'], $date);
+        $ad = new Ad($id, $adData['adText'], $adData['userName'], $password, $adData['phone'], $date);
         $sql = "INSERT INTO ads (id, ad_text, name, password, phone, post_date) VALUES (?, ?, ?, ?, ?, ?)";
         $data = [
             $ad->getId(),
@@ -87,6 +97,18 @@ class AdRepository
         return $ad;
     }
 
+    public static function updateAd($newAdData)
+    {
+        $sql = "UPDATE ads SET ad_text = ?, name = ?, phone = ? WHERE id = ?";
+        $data = [
+            $newAdData['adText'],
+            $newAdData['userName'],
+            $newAdData['phone'],
+            $newAdData['id']
+        ];
+        return self::getSQLBoolResult($sql, $data);
+    }
+
     public static function createTableAds()
     {
         $sql = "CREATE TABLE IF NOT EXISTS ads (
@@ -111,15 +133,14 @@ class AdRepository
     {
         $faker = \Faker\Factory::create();
         for ($i = 0; $i < $number; $i++) {
-            $queryBoolResult = self::createAd(
-                [
-                'ad-text' => $faker->text,
-                'user-name' => $faker->name,
-                'password' => '123',
+            $adData = [
+                'adText' => $faker->text,
+                'userName' => $faker->name,
+                'password' => '123456',
                 'phone' => $faker->phoneNumber,
-                ],
-                date_format($faker->dateTimeBetween('-1 week'), 'Y-m-d H:i:s')
-            );
+            ];
+            $date = date_format($faker->dateTimeBetween('-1 week'), 'Y-m-d H:i:s');
+            $queryBoolResult = self::createAd($adData, $date);
             if (!$queryBoolResult) {
                 return false;
             }

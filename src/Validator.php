@@ -15,7 +15,7 @@ class Validator
         $constraintAdText = [
             new Assert\Length(['min' => 20, 'max' => 1000])
         ];
-        $adTextViolations = $validator->validate($adData['ad-text'], $constraintAdText);
+        $adTextViolations = $validator->validate($adData['adText'], $constraintAdText);
         if (!empty($adTextViolations)) {
             $violations['adText'] = $adTextViolations;
         }
@@ -23,7 +23,7 @@ class Validator
         $constraintUserName = [
             new Assert\Length(['min' => 2, 'max' => 30])
         ];
-        $userNameViolations = $validator->validate($adData['user-name'], $constraintUserName);
+        $userNameViolations = $validator->validate($adData['userName'], $constraintUserName);
         if (!empty($userNameViolations)) {
             $violations['userName'] = $userNameViolations;
         }
@@ -37,7 +37,7 @@ class Validator
         }
 
         $constraintPhone = [
-            new Assert\Length(['min' => 6, 'max' => 18])
+            new Assert\Length(['min' => 6, 'max' => 30])
         ];
         $phoneViolations = $validator->validate($adData['phone'], $constraintPhone);
         if (!empty($phoneViolations)) {

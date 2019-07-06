@@ -14,7 +14,7 @@
         <header class="header">
             <h1>Major site for your advertisements.</h1>
             <h2>Post your advertisement. Buy goods from advertisements. And enjoy together with us.</h2>
-            <a href="/adform/new?previousPage=<?=$page?>" rel="post new ad">Please, click here, if you want post advertisement.</a>
+            <a href="/adform/new?page=<?=$page?>" rel="post new ad">Please, click here, if you want post advertisement.</a>
             <div class="commands">
                 Commands:&nbsp;&nbsp;
                 <form action="/remake-table" method="post">
@@ -145,7 +145,7 @@
                     <br>
                     <div class="ad-buttons">
                         <form action="/ads/<?=$ad->getId()?>" method="get">
-                            <input type="hidden" name="previousPage" value=<?=$page?>>
+                            <input type="hidden" name="page" value=<?=$page?>>
                             <input type="submit" value="Show more" class="btn btn-primary">
                         </form>
                     </div>

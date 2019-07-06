@@ -10,8 +10,8 @@ class ValidatorTest extends TestCase
     public function testValidateAdData()
     {
         $rightAdData = [
-            'ad-text' => 'Super puper ad dgdsf sf gs fgsd',
-            'user-name' => 'Mikhail',
+            'adText' => 'Super puper ad dgdsf sf gs fgsd',
+            'userName' => 'Mikhail',
             'password' => 'password',
             'phone' => '+79506512684'
         ];
@@ -24,8 +24,8 @@ class ValidatorTest extends TestCase
         }
         $this->assertEmpty($allViolations);
         $wrongAdData = [
-            'ad-text' => 'Su',
-            'user-name' => 'M',
+            'adText' => 'Su',
+            'userName' => 'M',
             'password' => 'p',
             'phone' => '+7950'
         ];

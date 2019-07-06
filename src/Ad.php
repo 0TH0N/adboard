@@ -30,7 +30,7 @@ class Ad
     }
 
     /**
-     * Get the value of ad_text
+     * Get the value of adText
      */
     public function getAdText()
     {

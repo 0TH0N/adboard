@@ -81,14 +81,14 @@ $app->post('/make-fake-ads', function ($request, $response) {
 });
 
 $app->get('/adform/new', function ($request, $response) {
-    $previousPage = $request->getQueryParam('previousPage', 1);
-    $params = ['previousPage' => $previousPage];
+    $page = $request->getQueryParam('page', 1);
+    $params = ['page' => $page];
     return $this->renderer->render($response, 'new-ad-form.phtml', $params);
 });
 
 $app->post('/adform', function ($request, $response) {
     $adData = $request->getParsedBodyParam('ad');
-    $previousPage = $request->getParsedBodyParam('previousPage');
+    $page = $request->getParsedBodyParam('page');
     $violations = Validator::validateAdData($adData);
     $allViolations = [];
     foreach ($violations as $group) {
@@ -118,7 +118,7 @@ $app->post('/adform', function ($request, $response) {
     $params = [
         'adData' => $adData,
         'errors' => $violations,
-        'previousPage' => $previousPage
+        'page' => $page
     ];
     $response->withStatus(403);
     $response->withHeader('X-Status-Reason', 'Validation failed');
@@ -127,10 +127,66 @@ $app->post('/adform', function ($request, $response) {
 
 $app->get('/ads/{id}', function ($request, $response, $args) {
     $id = $args['id'];
-    $previousPage = $request->getQueryParam('previousPage', 1);
+    $page = $request->getQueryParam('page', 1);
     $ad = AdRepository::getAd($id);
-    $params = ['ad' => $ad, 'previousPage' => $previousPage];
+    $params = ['ad' => $ad, 'page' => $page];
     return $this->renderer->render($response, 'show-ad.phtml', $params);
+});
+
+$app->get('/ads/edit/{id}', function ($request, $response, $args) {
+    $id = $args['id'];
+    $page = $request->getQueryParam('page', 1);
+    $ad = AdRepository::getAd($id);
+    $adData = [
+        'id' => $id,
+        'adText' => $ad->getAdText(),
+        'userName' => $ad->getUserName(),
+        'phone' => $ad->getPhone()
+    ];
+    $params = ['adData' => $adData, 'page' => $page];
+    return $this->renderer->render($response, 'show-ad-edit.phtml', $params);
+});
+
+$app->patch('/ads/edit', function ($request, $response) {
+    $adData = $request->getParsedBodyParam('ad');
+    $ad = AdRepository::getAd($adData['id']);
+    $wrongPassword = true;
+    if (AdRepository::checkPassword($adData['password'], $ad->getPassword())) {
+        $wrongPassword = false;
+    }
+    $adData['password'] = '123456';
+    $page = $request->getParsedBodyParam('page', 1);
+    $violations = Validator::validateAdData($adData);
+    $allViolations = [];
+    foreach ($violations as $group) {
+        foreach ($group as $violation) {
+            $allViolations[] = $violation;
+        }
+    }
+    
+    if (empty($allViolations) && (!$wrongPassword)) {
+        $requestResult = AdRepository::updateAd($adData);
+        switch ($requestResult) {
+            case 'true':
+                $this->flash->addMessage('success', 'Ad updated successful!');
+                break;
+
+            case 'false':
+                $this->flash->addMessage('error', 'Some error(-s) occured during updating ad!');
+                break;
+        }
+        return $response->withRedirect("/?page={$page}", 301);
+    }
+    
+    $params = [
+        'adData' => $adData,
+        'errors' => $violations,
+        'wrongPassword' => $wrongPassword,
+        'page' => $page
+    ];
+    $response->withStatus(403);
+    $response->withHeader('X-Status-Reason', 'Validation failed');
+    return $this->renderer->render($response, 'show-ad-edit.phtml', $params);
 });
 
 $app->run();
