@@ -1,9 +1,0 @@
-language: php
-php:
-  - 7.2.19
-
-
-script:
-  - make dump-autoload
-  - make test
-  - make phpcs
