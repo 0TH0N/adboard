@@ -136,15 +136,15 @@
         <main class="ads">
             <?php foreach ($ads as $ad): ?>
                 <div class="ad jumbotron">
-                    <div class="ad__id"><b>ID:</b> <?=$ad->getId()?></div>
-                    <div class="ad__text"><b>Ad text:</b> <?=substr($ad->getAdText(), 0, 100) . " ..."?></div>
+                    <div class="ad__id"><b>ID:</b> <?=htmlspecialchars($ad->getId())?></div>
+                    <div class="ad__text"><b>Ad text:</b> <?=htmlspecialchars(substr($ad->getAdText(), 0, 100) . " ...")?></div>
                     <br>
-                    <div class="ad__name"><b>Name:</b> <?=$ad->getUserName()?></div>
-                    <div class="ad__phone"><b>Phone:</b> <?=$ad->getPhone()?></div>
-                    <div class="ad__post-date"><b>Post date:</b> <?=$ad->getPostDate()?></div>
+                    <div class="ad__name"><b>Name:</b> <?=htmlspecialchars($ad->getUserName())?></div>
+                    <div class="ad__phone"><b>Phone:</b> <?=htmlspecialchars($ad->getPhone())?></div>
+                    <div class="ad__post-date"><b>Post date:</b> <?=htmlspecialchars($ad->getPostDate())?></div>
                     <br>
                     <div class="ad-buttons">
-                        <form action="/ads/<?=$ad->getId()?>" method="get">
+                        <form action="/ads/<?=htmlspecialchars($ad->getId())?>" method="get">
                             <input type="hidden" name="page" value=<?=$page?>>
                             <input type="submit" value="Show more" class="btn btn-primary">
                         </form>

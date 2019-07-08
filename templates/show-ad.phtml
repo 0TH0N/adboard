@@ -16,19 +16,19 @@
             <a href="/?page=<?= $page ?>"><< Return</a>
         </div>
         <header class="header">
-            <h1>Advertisement <?=$ad->getId()?></h1>
+            <h1>Advertisement <?=htmlspecialchars($ad->getId())?></h1>
         </header>
         <main class="detailed-ad">
             <div>Text</div>
-            <div><?=$ad->getAdText()?></div>
+            <div><?=htmlspecialchars($ad->getAdText())?></div>
             <div>Name</div>
-            <div><?=$ad->getUserName()?></div>
+            <div><?=htmlspecialchars($ad->getUserName())?></div>
             <div>Phone</div>
-            <div><?=$ad->getPhone()?></div>
+            <div><?=htmlspecialchars($ad->getPhone())?></div>
             <div>Post date</div>
-            <div><?=$ad->getPostDate()?></div>
+            <div><?=htmlspecialchars($ad->getPostDate())?></div>
             <div>
-                <form action="/ads/edit/<?=$ad->getId()?>" method="get">
+                <form action="/ads/edit/<?=htmlspecialchars($ad->getId())?>" method="get">
                     <input type="hidden" name="page" value=<?=$page?>>
                     <input type="submit" value="Edit" class="btn btn-secondary">
                 </form>
@@ -66,7 +66,7 @@
                 Do you real want delete this advertisement?
             </div>
             <div class="modal-footer">
-                <form action="/ads/delete/<?=$ad->getId()?>" method="post" id="modal-delete-yes-button">
+                <form action="/ads/delete/<?=htmlspecialchars($ad->getId())?>" method="post" id="modal-delete-yes-button">
                     <input type="hidden" name="_METHOD" value="DELETE">
                     <input type="hidden" name="page" value=<?=$page?>>
                     <label>

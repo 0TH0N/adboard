@@ -13,17 +13,17 @@
 <body>
     <div class="container">
         <div class="back-to-main">
-            <a href="/ads/<?=$adData['id']?>?page=<?=$page?>"><< Return</a>
+            <a href="/ads/<?=htmlspecialchars($adData['id'])?>?page=<?=$page?>"><< Return</a>
         </div>
         <header class="header">
-            <h1>Edit advertisement <?=$adData['id']?></h1>
+            <h1>Edit advertisement <?=htmlspecialchars($adData['id'])?></h1>
         </header>
         <main class="main">
             <form action="/ads/edit" method="post" class="form-group">
                 <div class="post-form">
                     <input type="hidden" name="_METHOD" value="PATCH">
                     <input type="hidden" name="page" value=<?=$page?>>
-                    <input type="hidden" name="ad[id]" value=<?=$adData['id']?>>
+                    <input type="hidden" name="ad[id]" value=<?=htmlspecialchars($adData['id'])?>>
                     <div class="post-form__item post-form__adText">
                         <label>
                             <div>Advertisement text:</div>
