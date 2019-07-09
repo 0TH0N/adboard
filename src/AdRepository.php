@@ -2,30 +2,17 @@
 
 namespace AdBoard;
 
+use \AdBoard\DBHelper;
+
 class AdRepository
 {
-    public static function fetchSQLAll($sql, $data = [])
-    {
-        $pdo = \AdBoard\Config\DBConnection::getConnection();
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute($data);
-        return $stmt->fetchAll();
-    }
-
-    public static function getSQLBoolResult($sql, $data = [])
-    {
-        $pdo = \AdBoard\Config\DBConnection::getConnection();
-        $stmt = $pdo->prepare($sql);
-        return $stmt->execute($data);
-    }
-
     public static function getAds($page = 1, $perPage = 12)
     {
         self::createTableAds();
         $offset = $perPage * ($page - 1);
         $sql = "SELECT * FROM ads ORDER BY post_date DESC LIMIT ? OFFSET ?";
         $data = [$perPage, $offset];
-        $adsData = self::fetchSQLAll($sql, $data);
+        $adsData = DBHelper::fetchSQLAll($sql, $data);
         $ads = collect($adsData)->map(
             function ($ad) {
                 return new Ad($ad['id'], $ad['ad_text'], $ad['name'], $ad['password'], $ad['phone'], $ad['post_date']);
@@ -37,7 +24,7 @@ class AdRepository
     public static function getMaxPageNumber($perPage = 12)
     {
         $sql = "SELECT COUNT(id) FROM ads";
-        $numberOfAds = self::fetchSQLAll($sql)[0]['COUNT(id)'];
+        $numberOfAds = DBHelper::fetchSQLAll($sql)[0]['COUNT(id)'];
         $maxPage = ceil($numberOfAds / $perPage);
         return $maxPage;
     }
@@ -46,7 +33,7 @@ class AdRepository
     {
         $sql = "SELECT * FROM ads WHERE ad_text = ? AND name = ? AND phone = ?";
         $data = [$adData['adText'], $adData['userName'], $adData['phone']];
-        $existedAds = self::fetchSQLAll($sql, $data);
+        $existedAds = DBHelper::fetchSQLAll($sql, $data);
         
         if (!empty($existedAds[0])) {
             return 'Similar ad is exist!';
@@ -65,14 +52,14 @@ class AdRepository
             $ad->getPhone(),
             $ad->getPostDate(),
         ];
-        return self::getSQLBoolResult($sql, $data) ? 'true' : 'false';
+        return DBHelper::getSQLBoolResult($sql, $data) ? 'true' : 'false';
     }
 
     public static function getAd($id)
     {
         $sql = "SELECT * FROM ads WHERE id = ?";
         $data = [$id];
-        $adData = self::fetchSQLAll($sql, $data);
+        $adData = DBHelper::fetchSQLAll($sql, $data);
         if (empty($adData)) {
             return false;
         }
@@ -96,14 +83,14 @@ class AdRepository
             $newAdData['phone'],
             $newAdData['id']
         ];
-        return self::getSQLBoolResult($sql, $data);
+        return DBHelper::getSQLBoolResult($sql, $data);
     }
 
     public static function deleteAd($id)
     {
         $sql = "DELETE FROM ads WHERE id = ?";
         $data = [$id];
-        return self::getSQLBoolResult($sql, $data);
+        return DBHelper::getSQLBoolResult($sql, $data);
     }
 
     public static function createTableAds()
@@ -117,13 +104,13 @@ class AdRepository
             post_date datetime NOT NULL,
             PRIMARY KEY (id)
             )";
-        return self::getSQLBoolResult($sql);
+        return DBHelper::getSQLBoolResult($sql);
     }
 
     public static function destroyTableAds()
     {
         $sql = "DROP TABLE IF EXISTS ads";
-        return self::getSQLBoolResult($sql);
+        return DBHelper::getSQLBoolResult($sql);
     }
 
     public static function fillAds($number)
