@@ -4,16 +4,6 @@ namespace AdBoard;
 
 class AdRepository
 {
-    public static function cryptPassword($password)
-    {
-        return password_hash($password, PASSWORD_BCRYPT);
-    }
-
-    public static function checkPassword($password, $hash)
-    {
-        return password_verify($password, $hash);
-    }
-
     public static function fetchSQLAll($sql, $data = [])
     {
         $pdo = \AdBoard\Config\DBConnection::getConnection();
@@ -63,7 +53,7 @@ class AdRepository
         }
         
         $id = hexdec(uniqid());
-        $password = self::cryptPassword($adData['password']);
+        $password = \AdBoard\Utils\cryptPassword($adData['password']);
         $date = $innerDate ?? date_format(\Carbon\Carbon::now(), 'Y-m-d H:i:s');
         $ad = new Ad($id, $adData['adText'], $adData['userName'], $password, $adData['phone'], $date);
         $sql = "INSERT INTO ads (id, ad_text, name, password, phone, post_date) VALUES (?, ?, ?, ?, ?, ?)";

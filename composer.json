@@ -17,7 +17,9 @@
             "AdBoard\\Tests\\": "tests/",
             "AdBoard\\Config\\": "config/"
         },
-        "files": []
+        "files": [
+            "src/Utils.php"
+        ]
     },
     "require": {
         "slim/slim": "^3.12",

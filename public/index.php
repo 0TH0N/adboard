@@ -167,7 +167,7 @@ $app->patch('/ads/edit', function ($request, $response) {
     $adData = $request->getParsedBodyParam('ad');
     $ad = AdRepository::getAd($adData['id']);
     $wrongPassword = true;
-    if (AdRepository::checkPassword($adData['password'], $ad->getPassword())) {
+    if (\AdBoard\Utils\checkPassword($adData['password'], $ad->getPassword())) {
         $wrongPassword = false;
     }
     $adData['password'] = '123456';
@@ -215,7 +215,7 @@ $app->delete('/ads/delete/{id}', function ($request, $response, $args) {
     $password = $request->getParsedBodyParam('password');
 
     // If password is right then delete ad
-    if (AdRepository::checkPassword($password, $ad->getPassword())) {
+    if (\AdBoard\Utils\checkPassword($password, $ad->getPassword())) {
         $resultQueryBool = AdRepository::deleteAd($id);
         if ($resultQueryBool) {
             $this->flash->addMessage('success', 'Ad deleted successful!');
