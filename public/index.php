@@ -5,6 +5,7 @@ namespace AdBoard\Index;
 require_once __DIR__ . '/../vendor/autoload.php';
 use \AdBoard\AdRepository;
 use \AdBoard\Validator;
+use \AdBoard\Utils;
 
 if (PHP_SAPI == 'cli-server') {
     // To help the built-in PHP dev server, check if the request was actually for
@@ -76,7 +77,7 @@ $app->post('/make-fake-ads', function ($request, $response) {
         return $response->withRedirect('/', 301);
     }
 
-    if (AdRepository::fillAds($number)) {
+    if (Utils\fillAds($number)) {
         $this->flash->addMessage('success', 'Successful added fake ads!');
     } else {
         $this->flash->addMessage('error', 'Error(-s) occured during making fake ads');
@@ -167,7 +168,7 @@ $app->patch('/ads/edit', function ($request, $response) {
     $adData = $request->getParsedBodyParam('ad');
     $ad = AdRepository::getAd($adData['id']);
     $wrongPassword = true;
-    if (\AdBoard\Utils\checkPassword($adData['password'], $ad->getPassword())) {
+    if (Utils\checkPassword($adData['password'], $ad->getPassword())) {
         $wrongPassword = false;
     }
     $adData['password'] = '123456';
@@ -215,7 +216,7 @@ $app->delete('/ads/delete/{id}', function ($request, $response, $args) {
     $password = $request->getParsedBodyParam('password');
 
     // If password is right then delete ad
-    if (\AdBoard\Utils\checkPassword($password, $ad->getPassword())) {
+    if (Utils\checkPassword($password, $ad->getPassword())) {
         $resultQueryBool = AdRepository::deleteAd($id);
         if ($resultQueryBool) {
             $this->flash->addMessage('success', 'Ad deleted successful!');
